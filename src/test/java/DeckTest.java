@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DeckTest {
 
@@ -45,6 +46,17 @@ public class DeckTest {
         Card card = deck.get26ThCard();
         assertEquals(SuitType.DIAMONDS, card.getsuit());
         assertEquals(RankType.KING, card.getRank());
+    }
+
+    @Test
+    public void deckCanDealCard(){
+        Card testCard = new Card(SuitType.HEARTS, RankType.JACK);
+        deck.populate();
+        deck.shuffle();
+        Card card = deck.deal();
+        assertEquals(51, deck.countCards());
+        assertTrue(card.getClass().isInstance(testCard));
+
     }
 
 }
