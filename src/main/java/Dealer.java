@@ -5,6 +5,8 @@ public class Dealer {
 
     private Deck deck;
     private ArrayList<Player> players;
+    private Card card1;
+    private Card card2;
 
     public Dealer() {
         this.players = new ArrayList<Player>();
@@ -12,6 +14,9 @@ public class Dealer {
 
     public void prepareDeck() {
         this.deck = new Deck();
+        this.deck.populate();
+        this.deck.populate();
+        this.deck.populate();
         this.deck.populate();
         this.deck.shuffle();
 
@@ -26,10 +31,13 @@ public class Dealer {
     }
 
     public void deal(int numberOfPlayers) {
+        this.card1 = this.deck.deal();
+        this.card2 = this.deck.deal();
         for (int i = 0; i < numberOfPlayers; i++) {
-            Card card = this.deck.deal();
+            Card card1 = this.deck.deal();
+            Card card2 = this.deck.deal();
             String playerName = String.format("Player%s", i + 1);
-            Player player = new Player(playerName, card);
+            Player player = new Player(playerName, card1, card2);
             this.players.add(player);
         }
     }
@@ -39,16 +47,22 @@ public class Dealer {
     }
 
     public String determineWinner() {
-        String result = "Wat";
-        int score = 0;
+        int scoreToBeat = this.card1.getValue() + this.card2.getValue();
+        String result = String.format("Dealer wins with %s", scoreToBeat);
         for (Player player : this.players) {
-            int cardValue = player.getCard().getRank().getValue();
-            if (cardValue > score) {
-                score = cardValue;
-                result = String.format("%s wins with %d", player.getName(), cardValue);
+            int card1Value = player.getCard1().getValue();
+            int card2Value = player.getCard2().getValue();
+            int playerScore = card1Value + card2Value;
+            if (playerScore > 21 && player.getCard1().getRank() == RankType.ACE){
+                playerScore -= 10;
             }
-
-
+            if (player.getCard2().getRank() == RankType.ACE){
+                playerScore -= 10;
+            }
+            if (playerScore > scoreToBeat && playerScore <= 21) {
+                scoreToBeat = playerScore;
+                result = String.format("%s wins with %d", player.getName(), scoreToBeat);
+            }
         }
         return result;
     }

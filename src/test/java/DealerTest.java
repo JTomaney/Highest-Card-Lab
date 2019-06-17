@@ -30,12 +30,13 @@ public class DealerTest {
     public void dealerCanDetermineWinner() {
         Card card1 = new Card(SuitType.CLUBS, RankType.TEN);
         Card card2 = new Card(SuitType.CLUBS, RankType.EIGHT);
-        Player player1 = new Player("Player1", card1);
-        Player player2 = new Player("Player2", card2);
+        Card card3 = new Card(SuitType.CLUBS, RankType.THREE);
+        Player player1 = new Player("Player1", card1, card2);
+        Player player2 = new Player("Player2", card2, card3);
         dealer.addPlayer("Player1", player1);
         dealer.addPlayer("Player2", player2);
         String result = dealer.determineWinner();
-        assertEquals("Player1 wins with 10", result);
+        assertEquals("Player1 wins with 18", result);
     }
 
 }
